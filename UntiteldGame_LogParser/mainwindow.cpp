@@ -89,11 +89,184 @@ void MainWindow::on_pushButton_clicked()
         }
     }
 
+
+
     for (int i = 0; i < strings.size(); i++){
-        qDebug() << i;
-        rendered += parse(strings[i]);
+        //qDebug() << i;
+        //rendered += parse(strings[i]);
+        test += strings[i].toLocal8Bit().constData();
+        test += "\n";
 
     }
+
+    //TODO
+    size_t pos= 0;
+    css = "<style> @import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono);body{ letter-spacing: 1.5px; background-color:#444444; font-family: 'Ubuntu Mono' ;} .black{ color:#000000; } .darkblue{ color:#000080; } .darkgreen{ color:#008000; } .darkcyan{ color:#008080; } .darkred{ color:#800000; } .darkmagenta{ color:#800080; } .darkyellow{ color:#808000; } .darkwhite{ color:#C0C0C0; } .darkgrey{ color:#808080; } .blue{ color:#0000FF; } .green{ color:#00FF00; } .cyan{ color:#00FFFF; } .red{ color:#FF0000; } .magenta{ color:#FF00FF; } .yellow{ color:#FFFF00; } .white{ color:#FFFFFF; } </style> ";
+    ui->setupUi(this);
+    divStartStart = "<span class=\"";
+    divStartEnd   = "\">";
+
+    divEnd = "</span>";
+    footer = "</body></html>";
+    header = "<!DOCTYPE html>\
+<html lang=\"en\">\
+<head>\
+<meta charset=\"UTF-8\">\
+<title>Document</title>\
+</head>\
+<body> ";
+
+    //std::string test = "&00&10&20&30&40\n&50&60&70&80&90";
+    //qDebug() <<pos;
+    std::string prepared;
+
+    prepared = header + divStartStart + "white" + divStartEnd;
+    test.insert(pos, prepared);
+    pos += prepared.size();
+
+    bool isPrevC = false;
+
+    while(pos < test.size())
+    {
+        if(test[pos] == '\n')
+        {
+            prepared = "<br>";
+            test.insert(pos, prepared);
+            pos += prepared.size();
+        }
+        if(isPrevC)
+        {
+            switch(test[pos])
+            {
+            case '&':
+                test.erase(pos,1);
+                break;
+            case '0':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "black" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case '1':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "darkblue" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case '2':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "darkgreen" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case '3':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "darkcyan" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case '4':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "darkred" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case '5':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "darkmagenta" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case '6':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "darkyellow" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case '7':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "darkwhite" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case '8':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "darkgrey" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case '9':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "blue" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case 'a':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "green" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case 'b':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "cyan" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case 'c':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "red" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case 'd':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "magenta" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case 'e':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "yellow" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            case 'f':
+                pos--;
+                test.erase(pos,2);
+                prepared = divEnd + divStartStart + "white" + divStartEnd;
+                test.insert(pos, prepared);
+                pos += prepared.size();
+                break;
+            default:
+
+            ;}
+        }
+
+        isPrevC = (test[pos] == '&');
+        pos++;
+    }
+    prepared = divEnd + css + footer;
+    test.insert(pos, prepared);
+    pos += prepared.size();
+
+
+    qDebug() << test.c_str();
 
     writeHtml();
 
@@ -101,23 +274,34 @@ void MainWindow::on_pushButton_clicked()
 }
 
 QString MainWindow::parse(QString line){
-    qDebug() << "Übergabe: ";
+    QString helper;
+
+    //qDebug() << "Übergabe: ";
     //qDebug() << "Color capacity" << colors.s
     for(int i = 0; i < colors.size(); i++){
         std::string temp = line.toLocal8Bit().constData();
+        qDebug() << temp.c_str();
+
         //qDebug() << "Conversion: " << i;
         if(temp.find(colors[i].toLocal8Bit().constData()) != std::string::npos){
             qDebug() << "foundcolor";
+
                 line = line.replace(colors[i],"");
 
-                line= "<div class=\"" + classes[i] + " log\">" + line + "</div>";
+                helper= "<div class=\"" + classes[i] + " log\">" + line + "</div>";
+        }else {
+            helper=  line + "<br>";
         }
 
 
     }
 
 
-    return line;
+
+
+
+
+    return helper;
 }
 
 void MainWindow::writeHtml(){
@@ -127,8 +311,9 @@ void MainWindow::writeHtml(){
     QFile file(filename);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
-    for (int i = 0; i < rendered.size(); i++){
-        out << rendered[i];
-    }
+
+
+    out << test.c_str();
+    file.close();
 
 }

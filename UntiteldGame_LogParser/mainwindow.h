@@ -34,7 +34,16 @@ private:
     std::vector<QString> classes;
     QStringList strings;
 
+
+    std::string header;
+    std::string footer;
+    std::string divStartStart;
+    std::string divStartEnd;
+    std::string divEnd;
+    std::string css;
     void writeHtml();
+
+    std::string test;
 
 };
 
