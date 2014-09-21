@@ -145,7 +145,8 @@ int main() {
 			float total = logfilestring.size();
 			cout << "Raw: " << pos << " / " << logfilestring.size() << endl;
 			cout << "progress = " << progress << "; total = " << total << ";" << endl;
-			cout << "Progress calculated: " << progress/total*100.0f << " % complete" << endl;
+			cout << "Progress calculated: " << ((int)(progress/total*100.0f)) << " % complete" << endl;
+			
 		}
 		if (logfilestring[pos] == '\n')
 		{
