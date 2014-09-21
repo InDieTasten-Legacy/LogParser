@@ -135,9 +135,12 @@ int main() {
     logfilestring.insert(pos, prepared);
     pos += prepared.size();
 
-
     while(pos < logfilestring.size())
     {
+        if(pos%1000) == 0)
+        {
+            cout << "Progress: " << ((int)(pos/logfileString.size()*1000))/10.0f << " % complete" << endl;
+        }
         if(logfilestring[pos] == '\n')
         {
             prepared = "<br>";
