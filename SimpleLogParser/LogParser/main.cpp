@@ -139,7 +139,7 @@ int main() {
 
 	while (pos < logfilestring.size())
 	{
-		if (pos % 1000) == 0)
+		if ((pos % 1000) == 0)
 		{
 			cout << "Progress: " << ((int)(pos / logfileString.size() * 1000)) / 10.0f << " % complete" << endl;
 		}
