@@ -139,9 +139,13 @@ int main() {
 
 	while (pos < logfilestring.size())
 	{
-		if ((pos % 1000) == 0)
+		if ((pos % 1000) == 0) // rate should be about 5k instead of 1k
 		{
-			cout << "Progress: " << pos << " from " << logfilestring.size() << " % complete" << endl;
+			float progress = pos;
+			float total = logfilestring.size();
+			cout << "Raw: " << pos << " / " << logfilestring.size() << endl;
+			cout << "progress = " << progress << "; total = " << total << ";" << endl;
+			cout << "Progress calculated: " << progress/total*100.0f << " % complete" << endl;
 		}
 		if (logfilestring[pos] == '\n')
 		{
@@ -277,6 +281,7 @@ int main() {
 		isPrevC = (logfilestring[pos] == '&');
 		pos++;
 	}
+	cout << "COMPLETE!!!" << endl;
 	prepared = divEnd + css + footer;
 	logfilestring.insert(pos, prepared);
 	pos += prepared.size();
