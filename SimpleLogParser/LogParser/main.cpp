@@ -141,7 +141,7 @@ int main() {
 	{
 		if ((pos % 1000) == 0)
 		{
-			cout << "Progress: " << ((int)pos / (int)logfilestring.size() * 100) << " % complete" << endl;
+			cout << "Progress: " << pos << " from " << logfilestring.size() << " % complete" << endl;
 		}
 		if (logfilestring[pos] == '\n')
 		{
