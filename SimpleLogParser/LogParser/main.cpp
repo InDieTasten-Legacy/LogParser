@@ -4,11 +4,56 @@
 #include <string>
 #include <fstream>
 
+
+#define PERR(bSuccess, api){if(!(bSuccess)) printf("%s:Error %d from %s \
+    on line %d\n", __FILE__, GetLastError(), api, __LINE__); }
+#define std_con_out GetStdHandle(STD_OUTPUT_HANDLE)
+
 using namespace std;
 
 vector<string> strings;
 string logfilestring;
 
+
+void cls(){
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD coordScreen = { 0, 0 };    /* here's where we'll home the
+									 cursor */
+	BOOL bSuccess;
+	DWORD cCharsWritten;
+	CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */
+	DWORD dwConSize;                 /* number of character cells in
+									 the current buffer */
+
+	/* get the number of character cells in the current buffer */
+
+	bSuccess = GetConsoleScreenBufferInfo(hConsole, &csbi);
+	PERR(bSuccess, "GetConsoleScreenBufferInfo");
+	dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
+
+	/* fill the entire screen with blanks */
+
+	bSuccess = FillConsoleOutputCharacter(hConsole, (TCHAR) ' ',
+		dwConSize, coordScreen, &cCharsWritten);
+	//PERR( bSuccess, "FillConsoleOutputCharacter" );
+
+	/* get the current text attribute */
+
+	bSuccess = GetConsoleScreenBufferInfo(hConsole, &csbi);
+	PERR(bSuccess, "ConsoleScreenBufferInfo");
+
+	/* now set the buffer's attributes accordingly */
+
+	bSuccess = FillConsoleOutputAttribute(hConsole, csbi.wAttributes,
+		dwConSize, coordScreen, &cCharsWritten);
+	PERR(bSuccess, "FillConsoleOutputAttribute");
+
+	/* put the cursor at (0, 0) */
+
+	bSuccess = SetConsoleCursorPosition(hConsole, coordScreen);
+	PERR(bSuccess, "SetConsoleCursorPosition");
+	return;
+}
 
 string CgetOpenFilePath(){
 	string temp = "";
@@ -139,8 +184,9 @@ int main() {
 
 	while (pos < logfilestring.size())
 	{
-		if ((pos % 1000) == 0) // rate should be about 5k instead of 1k
+		if ((pos % 5000) == 0) // rate should be about 5k instead of 1k
 		{
+			cls();
 			float progress = pos;
 			float total = logfilestring.size();
 			cout << "Raw: " << pos << " / " << logfilestring.size() << endl;
